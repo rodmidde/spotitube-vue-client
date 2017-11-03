@@ -10,7 +10,7 @@
       </div>
 
       <div class="flex-item">
-        <input type="password" placeholder="Password" v-model="password" required>
+        <input type="password" placeholder="Password" v-model="pass" required>
       </div>
       <button v-on:click="executeLogin">Login</button>
     </div>
