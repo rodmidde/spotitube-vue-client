@@ -1,6 +1,6 @@
 <template>
-    <div id="app-tracks-overview" class="content flex-container" fxLayout="row" fxLayoutAlign="center">
-        Tracks
+    <div id="app-tracks-overview" class="modal-header" fxLayout="row" fxLayoutAlign="center">
+        <h3>Tracks</h3>
 
         <ul>
         <li v-for="track in tracks">

@@ -37,6 +37,36 @@ class ApiGateway {
         })
     }
 
+    addPlaylist = function(token, name, callback)
+    {
+        axios.post(this.serverlocation + "/playlists?token=" + token, {
+            "id"    : -1,
+            "name"  : name,
+            "owner" : false
+          }).
+        then(response => {
+            callback(response.data.playlists)
+        })
+        .catch(e => {
+            alert(e)
+        })
+    }
+
+    updatePlaylist = function(token, id, name, callback)
+    {
+        axios.put(this.serverlocation + "/playlists/" + id +"?token=" + token, {
+            "id"    : id,
+            "name"  : name,
+            "owner" : false
+          }).
+        then(response => {
+            callback(response.data.playlists)
+        })
+        .catch(e => {
+            alert(e)
+        })
+    }
+
     getTracks = function(token, id, callback)
     {
         axios.get(this.serverlocation + "/playlists/" + id + "/tracks?token=" + token).

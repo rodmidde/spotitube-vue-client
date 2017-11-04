@@ -1,6 +1,6 @@
 <template>
-    <div id="app-header" class="content flex-container" fxLayout="row" fxLayoutAlign="center">
-        Welkom bij Spotitube!
+    <div id="app-header" class="modal-header" fxLayout="row" fxLayoutAlign="center">
+        <h3>Welkom bij Spotitube!</h3>
         <button v-on:click="executeLogout" v-if="token!=''">Logout</button>
     </div>
 </template>

@@ -1,30 +1,47 @@
 <template>
-    <div id="app-playlists-overview" class="content flex-container" fxLayout="row" fxLayoutAlign="center">
-        Playlists
+    <div id="app-playlists-overview" class="modal-header" fxLayout="row" fxLayoutAlign="center">
+        <h3>Playlists</h3>
 
         <ul>
         <li v-for="playlist in playlists">
             <a href="#" v-on:click="showTracks(playlist.id)">{{ playlist.name }}</a>
-            <button v-on:click="executeUpdate(playlist.id)">Update</button>
+            <button v-on:click="executeUpdate(playlist.id, playlist.name)">Update</button>
             <button v-on:click="executeDelete(playlist.id)">Delete</button>
        </li>
-        </ul>
+       </ul>
+      <new-playlist-modal :show="showNewPlaylistModal" @close="showNewPlaylistModal = false"></new-playlist-modal>
+      <update-playlist-modal :show="updatePlaylistModal" @close="updatePlaylistModal = false" :pid="id" :pname="name"></update-playlist-modal>
 
-        <button v-on:click="executeAdd">Add Playlist</button>
+      <button @click="showNewPlaylistModal = true">Add Playlist</button>
     </div>
 </template>
 
 <script>
+import NewPlaylistModal from './NewPlaylistModal.vue'
+import UpdatePlaylistModal from './UpdatePlaylistModal.vue'
+
 export default {
   name: "app-playlists-overview",
   dependencies: ["apiGateway", "localStorage"],
+  components: 
+  {
+    NewPlaylistModal, UpdatePlaylistModal
+  },
 
   created() {
     this.apiGateway.getPlaylists(this.localStorage.get("token"), this.setPlaylists)
+
+    this.$bus.$on("playlists-updated", playlists => {
+      this.setPlaylists(playlists)
+    })
   },
   data() {
     return {
-      playlists: []
+      playlists: [],
+      showNewPlaylistModal: false,
+      updatePlaylistModal: false,
+      id: '',
+      name: ''
     };
   },
   methods: {
@@ -38,9 +55,11 @@ export default {
         this.$bus.$emit('playlist-selected', id)
       },
 
-      executeUpdate: function(id)
+      executeUpdate: function(id, name)
       {
-        alert(id)
+        this.id = id;
+        this.name = name;
+        this.updatePlaylistModal = true;
       },
 
       executeDelete: function(id)

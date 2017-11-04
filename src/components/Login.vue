@@ -1,18 +1,19 @@
 <template>
   <div id="login" v-if="token == ''" class="content flex-container" fxLayout="row" fxLayoutAlign="center">
-    <div class="flex-container" fxLayout="column">
-      <div class="flex-item">
-        <input id="urlInput" placeholder="Server URL" v-model="serverlocation" pattern="http://[a-zA-Z0-9:/.\-]+" required>
-      </div>
-
-      <div class="flex-item">
-        <input placeholder="User" v-model="user" required>
-      </div>
-
-      <div class="flex-item">
-        <input type="password" placeholder="Password" v-model="pass" required>
-      </div>
-      <button v-on:click="executeLogin">Login</button>
+    <div class="form-control">
+        <label class="form-label">
+                    Server URL
+          <input id="urlInput" class="form-control" placeholder="Server URL" v-model="serverlocation" pattern="http://[a-zA-Z0-9:/.\-]+" required>
+        </label>
+        <label class="form-label">
+                    User
+          <input placeholder="User" class="form-control" v-model="user" required>
+        </label>
+        <label class="form-label">
+                    Password
+          <input type="password" class="form-control" placeholder="Password" v-model="pass" required>
+        </label>
+        <button v-on:click="executeLogin">Login</button>
     </div>
   </div>
 </template>
