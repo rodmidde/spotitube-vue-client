@@ -11,25 +11,23 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
 export default {
-  name: "modal",
+  name: 'modal',
   template: '#modal-template',
   props: ['show'],
   methods: {
     close: function () {
-      this.$emit('close');
+      this.$emit('close')
     }
   },
   mounted: function () {
-    document.addEventListener("keydown", (e) => {
-      if (this.show && e.keyCode == 27) {
-        this.close();
+    document.addEventListener('keydown', (e) => {
+      if (this.show && e.keyCode === 27) {
+        this.close()
       }
-    });
+    })
   }
-};
+}
 </script>
 
 <style>

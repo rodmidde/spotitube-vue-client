@@ -6,29 +6,27 @@
 </template>
 
 <script>
-import Vue from 'vue'
+  export default {
+    name: 'app-header',
 
-export default {
-  name: "app-header",
+    created () {
+      this.$bus.$on('token-set', token => {
+        this.token = token
+      })
+    },
 
-  created() {
-    this.$bus.$on('token-set', token => {
-        this.token = token;
-    });
-  },
-
-  data() {
-    return {
-      token: "",
-    };
-  },
-  methods: {
-    executeLogout: function() {
-      this.token = '';
-      this.$bus.$emit('logged-out', {})
+    data () {
+      return {
+        token: ''
+      }
+    },
+    methods: {
+      executeLogout: function () {
+        this.token = ''
+        this.$bus.$emit('logged-out', {})
+      }
     }
   }
-};
 </script>
 
 <style scoped>

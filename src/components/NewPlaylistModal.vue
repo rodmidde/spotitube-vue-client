@@ -20,35 +20,32 @@
 </template>
 
 <script>
-import Modal from './Modal.vue'
+  import Modal from './Modal.vue'
 
-export default {
-  template: '#new-playlist-modal-template',
-  dependencies: ["apiGateway","localStorage"],
-  components: {
-      Modal
-  },
-  props: ['show'],
-  data: function () {
-    return {
-      name: '',
-    };
-  },
-  methods: {
-    close: function () {
-      this.$emit('close');
-      this.name = '';
+  export default {
+    template: '#new-playlist-modal-template',
+    dependencies: ['apiGateway', 'localStorage'],
+    components: {Modal},
+    props: ['show'],
+    data: function () {
+      return {
+        name: ''
+      }
     },
-    savePlaylist: function () {
-        this.apiGateway.addPlaylist(this.localStorage.get("token"), this.name, this.updatePlaylists)
-        this.close();
-    },
-    updatePlaylists: function(playlists)
-    {
-        this.$bus.$emit("playlists-updated", playlists)
+    methods: {
+      close: function () {
+        this.$emit('close')
+        this.name = ''
+      },
+      savePlaylist: function () {
+        this.apiGateway.addPlaylist(this.localStorage.get('token'), this.name, this.updatePlaylists)
+        this.close()
+      },
+      updatePlaylists: function (playlists) {
+        this.$bus.$emit('playlists-updated', playlists)
+      }
     }
-  }  
-}
+  }
 </script>
 
 <style>

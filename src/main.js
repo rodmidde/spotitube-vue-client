@@ -4,16 +4,16 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueLocalStorage from 'vue-localstorage'
-import injector from 'vue-inject';
+import injector from 'vue-inject'
 
-Vue.use(injector);
+Vue.use(injector)
 Vue.use(VueLocalStorage)
 
-require("./apigateway")
-require("./localstorage")
-require("./event-bus")
+require('./apigateway')
+require('./localstorage')
+require('./event-bus')
 
-var bus = new Vue({ // eslint-disable-line no-new
+new Vue({ // eslint-disable-line no-new
   el: '#app',
   render: (h) => h(App)
 })

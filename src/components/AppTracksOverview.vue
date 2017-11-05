@@ -12,26 +12,25 @@
 
 <script>
 export default {
-  name: "app-tracks-overview",
-  dependencies: ["apiGateway","localStorage"],
+  name: 'app-tracks-overview',
+  dependencies: ['apiGateway', 'localStorage'],
 
-  created() {
+  created () {
     this.$bus.$on('playlist-selected', ($id) => {
       this.playlistId = $id
-      this.apiGateway.getTracks(this.localStorage.get("token"), this.playlistId, this.setTracks)
+      this.apiGateway.getTracks(this.localStorage.get('token'), this.playlistId, this.setTracks)
     })
   },
-  data() {
+  data () {
     return {
-      tracks: [], 
+      tracks: [],
       playlistId: ''
-    };
+    }
   },
   methods: {
-      setTracks : function(tracks)
-      {
-          this.tracks = tracks;
-      }
+    setTracks: function (tracks) {
+      this.tracks = tracks
+    }
   }
-};
+}
 </script>
