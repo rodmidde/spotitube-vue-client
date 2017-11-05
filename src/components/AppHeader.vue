@@ -1,29 +1,26 @@
 <template>
     <div id="app-header" class="modal-header" fxLayout="row" fxLayoutAlign="center">
         <h3>Welkom bij Spotitube!</h3>
-        <button v-on:click="executeLogout" v-if="token!=''">Logout</button>
+        <logout-button v-if="token!==''"></logout-button>
     </div>
 </template>
 
 <script>
+  import LogoutButton from './LogoutButton.vue'
   export default {
     name: 'app-header',
-
+    components: { LogoutButton },
     created () {
       this.$bus.$on('token-set', token => {
         this.token = token
       })
+      this.$bus.$on('logged-out', obj => {
+        this.token = ''
+      })
     },
-
     data () {
       return {
         token: ''
-      }
-    },
-    methods: {
-      executeLogout: function () {
-        this.token = ''
-        this.$bus.$emit('logged-out', {})
       }
     }
   }

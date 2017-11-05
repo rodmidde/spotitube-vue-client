@@ -74,7 +74,36 @@ export class ApiGateway {
         console.log(e)
       })
   }
+
+  addTrackToPlaylist (token, playlistid, track, callback) {
+    axios.post(this.serverlocation + '/playlists/' + playlistid + '/tracks?token=' + token, track)
+      .then(response => {
+        callback(response.data.tracks)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
+  removeTrackFromPlaylist (token, playlistid, trackid, callback) {
+    axios.delete(this.serverlocation + '/playlists/' + playlistid + '/tracks/' + trackid + '?token=' + token)
+      .then(response => {
+        callback(response.data.tracks)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
+  getAllTracksNotInPlaylist (token, playlistid, callback) {
+    axios.get(this.serverlocation + '/tracks?forPlaylist=' + playlistid + '&token=' + token)
+      .then(response => {
+        callback(response.data.tracks)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
 }
 
-// Vue.$ioc.register('apiGateway', ApiGateway);
 injector.service('apiGateway', ApiGateway)

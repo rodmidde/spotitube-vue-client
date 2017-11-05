@@ -9,9 +9,9 @@ import injector from 'vue-inject'
 Vue.use(injector)
 Vue.use(VueLocalStorage)
 
-require('./apigateway')
-require('./localstorage')
-require('./event-bus')
+require('./api/apigateway')
+require('./storage/localstorage')
+require('./events/event-bus')
 
 new Vue({ // eslint-disable-line no-new
   el: '#app',

@@ -1,13 +1,17 @@
+import injector from 'vue-inject'
+
 export class LocalStorage {
-    static set = function(key, value){
-        this.key = value;
-    }
+  set (key, value) {
+    this.key = value
+  }
 
-    static get = function(key) {
-        return this[key];
-    }
+  get (key) {
+    return this[key]
+  }
 
-    static remove = function(key) {
-        this[key] = undefined
-    }
+  remove (key) {
+    this[key] = undefined
+  }
 }
+
+injector.service('localStorage', LocalStorage)
