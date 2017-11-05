@@ -3,10 +3,10 @@
 // This is done with the browser options. For the config, see package.json
 import Vue from 'vue'
 import App from './App.vue'
-import injector from 'vue-inject'
 import VueLocalStorage from 'vue-localstorage'
+import injector from 'vue-inject';
 
-Vue.use(injector)
+Vue.use(injector);
 Vue.use(VueLocalStorage)
 
 require("./apigateway")

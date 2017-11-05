@@ -1,7 +1,7 @@
-import injector from 'vue-inject';
 import Vue from 'vue'
+import injector from 'vue-inject';
 
-class LocalStorage {
+export class LocalStorage {
     set = function(key, value){
         Vue.localStorage.set(key, value)
     }
@@ -14,4 +14,5 @@ class LocalStorage {
         return Vue.localStorage.remove(key)
     }
 }
+//Vue.$ioc.register('localStorage', LocalStorage);
 injector.service('localStorage', LocalStorage);

@@ -1,8 +1,9 @@
-import injector from 'vue-inject';
+import Vue from 'vue';
 import axios from 'axios';
+import injector from 'vue-inject';
 
-class ApiGateway {
-    login = function(user, pass, serverlocation, callback)
+export class ApiGateway {
+    login(user, pass, serverlocation, callback)
     {
         this.serverlocation = serverlocation
 
@@ -15,7 +16,7 @@ class ApiGateway {
         })
     }
 
-    getPlaylists = function(token, callback)
+    getPlaylists(token, callback)
     {
         axios.get(this.serverlocation + "/playlists?token=" + token).
         then(response => {
@@ -26,7 +27,7 @@ class ApiGateway {
         })
     }
 
-    deletePlaylist = function(token, id, callback)
+    deletePlaylist(token, id, callback)
     {
         axios.delete(this.serverlocation + "/playlists/" + id + "?token=" + token).
         then(response => {
@@ -37,7 +38,7 @@ class ApiGateway {
         })
     }
 
-    addPlaylist = function(token, name, callback)
+    addPlaylist(token, name, callback)
     {
         axios.post(this.serverlocation + "/playlists?token=" + token, {
             "id"    : -1,
@@ -52,7 +53,7 @@ class ApiGateway {
         })
     }
 
-    updatePlaylist = function(token, id, name, callback)
+    updatePlaylist(token, id, name, callback)
     {
         axios.put(this.serverlocation + "/playlists/" + id +"?token=" + token, {
             "id"    : id,
@@ -67,7 +68,7 @@ class ApiGateway {
         })
     }
 
-    getTracks = function(token, id, callback)
+    getTracks(token, id, callback)
     {
         axios.get(this.serverlocation + "/playlists/" + id + "/tracks?token=" + token).
         then(response => {
@@ -78,4 +79,5 @@ class ApiGateway {
         })
     }
 }
+//Vue.$ioc.register('apiGateway', ApiGateway);
 injector.service('apiGateway', ApiGateway);

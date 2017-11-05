@@ -19,10 +19,13 @@
 <script>
 import NewPlaylistModal from './NewPlaylistModal.vue'
 import UpdatePlaylistModal from './UpdatePlaylistModal.vue'
+import { ApiGateway } from '../apigateway.js'
+import { LocalStorage } from '../localstorage.js'
 
 export default {
   name: "app-playlists-overview",
-  dependencies: ["apiGateway", "localStorage"],
+  dependencies: ["apiGateway","localStorage"],
+
   components: 
   {
     NewPlaylistModal, UpdatePlaylistModal

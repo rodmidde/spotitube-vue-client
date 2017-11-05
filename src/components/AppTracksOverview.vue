@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "app-tracks-overview",
-  dependencies: ["apiGateway", "localStorage"],
+  dependencies: ["apiGateway","localStorage"],
 
   created() {
     this.$bus.$on('playlist-selected', ($id) => {

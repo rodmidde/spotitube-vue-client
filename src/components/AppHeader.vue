@@ -7,14 +7,12 @@
 
 <script>
 import Vue from 'vue'
-import { EventBus } from '../event-bus.js';
 
 export default {
   name: "app-header",
-  dependencies: ["apiGateway"],
 
   created() {
-    EventBus.$on('token-set', token => {
+    this.$bus.$on('token-set', token => {
         this.token = token;
     });
   },
@@ -27,7 +25,7 @@ export default {
   methods: {
     executeLogout: function() {
       this.token = '';
-      EventBus.$emit('logged-out', {})
+      this.$bus.$emit('logged-out', {})
     }
   }
 };

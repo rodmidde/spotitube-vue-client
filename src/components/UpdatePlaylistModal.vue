@@ -25,7 +25,7 @@ import Modal from './Modal.vue'
 
 export default {
   template: '#update-playlist-modal-template',
-  dependencies: ["apiGateway", "localStorage"],
+  dependencies: ["apiGateway","localStorage"],
   components: {
       Modal
   },

@@ -7,27 +7,25 @@
         </label>
         <label class="form-label">
                     User
-          <input placeholder="User" class="form-control" v-model="user" required>
+          <input id="userInput" placeholder="User" class="form-control" v-model="user" required>
         </label>
         <label class="form-label">
                     Password
-          <input type="password" class="form-control" placeholder="Password" v-model="pass" required>
+          <input id="passInput" type="password" class="form-control" placeholder="Password" v-model="pass" required>
         </label>
-        <button v-on:click="executeLogin">Login</button>
+        <button id="loginButton" v-on:click="executeLogin">Login</button>
     </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { EventBus } from '../event-bus.js';
 
 export default {
   name: "login",
-  dependencies: ["apiGateway", "localStorage"],
-
+  dependencies: ["apiGateway","localStorage"],
   created() {
-    EventBus.$on("logged-out", obj => {
+    this.$bus.$on("logged-out", obj => {
       this.token = '';
       this.localStorage.remove("token");
     })
@@ -47,7 +45,7 @@ export default {
     setToken: function(token) {
       this.localStorage.set("token", token);
       this.token = token;
-      EventBus.$emit('token-set', token)
+      this.$bus.$emit('token-set', token)
     }
   }
 };
