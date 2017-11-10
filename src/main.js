@@ -5,7 +5,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueLocalStorage from 'vue-localstorage'
 import injector from 'vue-inject'
+var VueMaterial = require('vue-material')
 
+Vue.use(VueMaterial)
 Vue.use(injector)
 Vue.use(VueLocalStorage)
 

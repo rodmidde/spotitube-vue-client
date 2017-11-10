@@ -15,7 +15,7 @@ export default class AppHeaderTest extends VueTestCase {
 
   /** @test */
   whenLoggedInEventReceivedTokenGetsSet () {
-    EventBus.$emit('token-set', 'tokentje')
+    EventBus.$emit('token-set', {'token': 'tokentje', user: '', serverlocation: ''})
     this.assertEquals('tokentje', this.SUT.token)
   }
 }

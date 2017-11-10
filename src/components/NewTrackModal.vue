@@ -1,32 +1,27 @@
 <template>
-    <div id="new-track-modal-template">
-        <modal :show="show" @close="close">
-            <div class="modal-header">
-                <h3>Add Track to playlist</h3>
-            </div>
-            <div class="modal-body">
+    <md-dialog md-open-from="#openNewTrackButton" md-close-to="#openNewTrackButton" ref="newTrack">
+            <md-dialog-title md-dialog-title>
+            Add Track To Playlist
+            </md-dialog-title>
+            <md-dialog-content>
                 <select v-model="selected">
                     <!-- inline object literal -->
                     <option v-for="t in tracks" :value=t.id>{{ t.title }}</option>
                 </select>
-            </div>
-            <div class="modal-footer text-right">
-                <button class="modal-default-button" @click="addTrackToPlaylist()">
-                    Add
-                </button>
-            </div>
-        </modal>
-    </div>
+            </md-dialog-content>
+
+            <md-dialog-actions align="end">
+                <button class="modal-default-button" @click="addTrackToPlaylist()">Add</button>
+                <button md-button color="primary" @click="close('newTrack')">Cancel</button>
+            </md-dialog-actions>
+    </md-dialog>
 </template>
 
 <script>
-  import Modal from './Modal.vue'
-
   export default {
     template: '#new-playlist-modal-template',
     dependencies: ['apiGateway', 'localStorage'],
-    components: {Modal},
-    props: ['show', 'playlistid'],
+    props: ['playlistid'],
     data: function () {
       return {
         tracks: [],
@@ -35,17 +30,19 @@
       }
     },
     created () {
-      this.apiGateway.getAllTracksNotInPlaylist(this.localStorage.get('token'), this.playlistid, this.setTracks)
+      this.$bus.$on('openNewTrack', ref => {
+        this.$refs[ref].open()
+        this.apiGateway.getAllTracksNotInPlaylist(this.localStorage.get('token'), this.playlistid, this.setTracks)
+      })
     },
     methods: {
-      close: function () {
-        this.$emit('close')
-        this.name = ''
+      close: function (ref) {
+        this.$refs[ref].close()
       },
       addTrackToPlaylist: function () {
         this.track = this.tracks.find(this.findTrack)
         this.apiGateway.addTrackToPlaylist(this.localStorage.get('token'), this.playlistid, this.track, this.updateTracks)
-        this.close()
+        this.close('newTrack')
       },
       findTrack: function (t) {
         return t.id === this.selected

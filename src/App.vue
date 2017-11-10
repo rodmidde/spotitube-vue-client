@@ -1,12 +1,11 @@
 <template>
-    <div id="app">
-        <app-header class="flex-item" fxFlexAlign="center"></app-header>
-
-        <app-playlists-overview class="flex-item" fxFlexAlign="center" v-if="token != ''"></app-playlists-overview>
-
-        <app-tracks-overview class="flex-item" fxFlexAlign="center" v-if="playlistId != ''"></app-tracks-overview>
-
-        <login class="flex-item" fxFlexAlign="center"></login>
+    <div id="app" class="flex-container">
+        <app-header class="header flex-item"/>
+        <div  class="overview flex-container">
+            <app-playlists-overview class="flex-item playlists" v-if="token != ''"/>
+            <app-tracks-overview class="flex-item tracks" v-if="playlistId != ''"/>
+        </div>
+        <login class="flex-item"/>
     </div>
 </template>
 
@@ -45,3 +44,9 @@
   }
 </script>
 
+<style scoped>
+    .overview {
+        height: calc(100% - 64px);
+        width: 100%;
+    }
+</style>

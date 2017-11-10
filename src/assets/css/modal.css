@@ -2,11 +2,60 @@
     box-sizing: border-box;
 }
 
+.flex-container {
+padding: 0;
+    margin: 0;
+    list-style: none;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    height: 100%;
+    -webkit-flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.flex-item {
+    width: 100%;
+}
+
+.playlists {
+    min-height: 100%;
+    width: 25%;
+}
+
+.playlist-name {
+    max-width: 100%;
+}
+
+.tracks {
+    min-height: 100%;
+    width: 75%;
+}
+
+.length {
+    max-width: 100%;
+}
+
+#app-header {
+    width:100%;
+}
+
+.title {
+    float: left;
+    padding-left: 20px;
+}
+
+.mat-body-2, .md-menu {
+    padding-left: 20px;
+    float: right;
+}
+
 .modal-mask {
-    position: fixed;
     z-index: 9998;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
@@ -26,7 +75,7 @@
 
 .modal-header h3 {
     margin-top: 0;
-    color: #42b983;
+    color: #3f51b5;
 }
 
 .modal-body {

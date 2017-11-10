@@ -20,7 +20,7 @@ export class ApiGateway {
   getPlaylists (token, callback) {
     axios.get(this.serverlocation + '/playlists?token=' + token)
       .then(response => {
-        callback(response.data.playlists)
+        callback(response.data.playlists, response.data.length)
       })
       .catch(e => {
         console.log(e)
@@ -30,7 +30,7 @@ export class ApiGateway {
   deletePlaylist (token, id, callback) {
     axios.delete(this.serverlocation + '/playlists/' + id + '?token=' + token)
       .then(response => {
-        callback(response.data.playlists)
+        callback(response.data.playlists, response.data.length)
       })
       .catch(e => {
         console.log(e)
@@ -44,7 +44,7 @@ export class ApiGateway {
       'owner': false
     })
       .then(response => {
-        callback(response.data.playlists)
+        callback(response.data.playlists, response.data.length)
       })
       .catch(e => {
         console.log(e)
@@ -58,7 +58,7 @@ export class ApiGateway {
       'owner': false
     })
       .then(response => {
-        callback(response.data.playlists)
+        callback(response.data.playlists, response.data.length)
       })
       .catch(e => {
         console.log(e)

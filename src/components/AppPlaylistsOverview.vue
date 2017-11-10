@@ -1,19 +1,30 @@
 <template>
-    <div id="app-playlists-overview" class="modal-header" fxLayout="row" fxLayoutAlign="center">
+    <div id="app-playlists-overview" class="modal-header">
         <h3>Playlists</h3>
 
-        <ul>
-            <li v-for="playlist in playlists">
-                <a href="#" v-on:click="showTracks(playlist.id)">{{ playlist.name }}</a>
-                <button v-on:click="executeUpdate(playlist.id, playlist.name)">Update</button>
-                <button v-on:click="executeDelete(playlist.id)">Delete</button>
-            </li>
-        </ul>
-        <new-playlist-modal :show="showNewPlaylistModal" @close="showNewPlaylistModal = false"></new-playlist-modal>
-        <update-playlist-modal :show="updatePlaylistModal" @close="updatePlaylistModal = false" :pid="id"
-                               :pname="name"></update-playlist-modal>
-
-        <button @click="showNewPlaylistModal = true">Add Playlist</button>
+        <md-card class="flex-item">
+            <md-card-content>
+            <ul class="flex-container">
+                <li v-for="playlist in playlists" class="flex-item flex-container">
+                    <a href="#" v-on:click="showTracks(playlist.id)" class="playlist-name">{{ playlist.name }}</a>
+                    <button md-button v-on:click="executeUpdate(playlist.id, playlist.name)"><md-icon>edit</md-icon></button>
+                    <button v-on:click="executeDelete(playlist.id)"><md-icon>delete</md-icon></button>
+                </li>
+            </ul>
+            </md-card-content>
+        </md-card>
+        <md-card class="flex-item">
+            <md-card-content class="flex-container">
+                <span class="length">
+                Total length: {{minutes}}
+                </span>
+                <button @click="openDialog('newPlaylist')" class="add-button" id="openNewPlaylistButton">
+                    <md-icon>playlist_add</md-icon>
+                </button>
+            </md-card-content>
+        </md-card>
+        <new-playlist-modal></new-playlist-modal>
+        <update-playlist-modal :pid="id" :pname="name"></update-playlist-modal>
     </div>
 </template>
 
@@ -32,22 +43,33 @@
     created () {
       this.apiGateway.getPlaylists(this.localStorage.get('token'), this.setPlaylists)
 
-      this.$bus.$on('playlists-updated', playlists => {
-        this.setPlaylists(playlists)
+      this.$bus.$on('playlists-updated', obj => {
+        this.setPlaylists(obj.playlists, obj.length)
       })
     },
     data () {
       return {
         playlists: [],
-        showNewPlaylistModal: false,
-        updatePlaylistModal: false,
         id: '',
-        name: ''
+        name: '',
+        minutes: ''
       }
     },
     methods: {
-      setPlaylists: function (playlists) {
+      openDialog (ref) {
+        this.$bus.$emit('openNewPlaylist', ref)
+      },
+      toMinutes: function (length) {
+        const date = new Date(null)
+        date.setSeconds(length)
+        const minutes = date.toISOString().substr(11, 8)
+
+        return minutes
+      },
+
+      setPlaylists: function (playlists, length) {
         this.playlists = playlists
+        this.minutes = this.toMinutes(length)
       },
 
       showTracks: function (id) {
@@ -58,10 +80,12 @@
         this.id = id
         this.name = name
         this.updatePlaylistModal = true
+        this.$bus.$emit('updatePlaylist', 'updatePlaylist')
       },
 
       executeDelete: function (id) {
         this.apiGateway.deletePlaylist(this.localStorage.get('token'), id, this.setPlaylists)
+        this.$bus.$emit('playlist-selected', '')
       }
     }
   }
