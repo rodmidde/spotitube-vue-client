@@ -32,7 +32,7 @@
         this.user = userCredentials.user
         this.serverlocation = userCredentials.serverlocation
       })
-      this.$bus.$on('logged-out', obj => {
+      this.$bus.$on('logged-out', () => {
         this.token = ''
         this.user = ''
         this.serverlocation = ''

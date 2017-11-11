@@ -29,7 +29,7 @@
     name: 'login',
     dependencies: ['apiGateway', 'localStorage'],
     created () {
-      this.$bus.$on('logged-out', obj => {
+      this.$bus.$on('logged-out', () => {
         this.token = ''
         this.localStorage.remove('token')
       })

@@ -30,7 +30,7 @@
       this.$bus.$on('playlist-selected', ($id) => {
         this.playlistId = $id
       })
-      this.$bus.$on('logged-out', obj => {
+      this.$bus.$on('logged-out', () => {
         this.token = ''
         this.playlistId = ''
       })

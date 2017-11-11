@@ -10,7 +10,7 @@ export default class LogoutButtonTest extends VueTestCase {
   /** @test */
   whenLogoutButtonClickedTokenGetsReset () {
     this.SUT.executeLogout()
-    EventBus.$on('logged-out', obj => {
+    EventBus.$on('logged-out', () => {
       this.assertTrue(true)
     })
   }

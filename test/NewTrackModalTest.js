@@ -2,7 +2,7 @@ import VueTestCase from 'petrol/core/VueTestCase'
 import NewTrackModal from '../src/components/NewTrackModal.vue'
 import Vue from 'vue'
 import injector from 'vue-inject'
-import {EventBus} from "../src/events/event-bus";
+import {EventBus} from '../src/events/event-bus'
 
 Vue.use(injector)
 require('./mocks/apigateway.js')
@@ -20,7 +20,7 @@ export default class NewTrackModalTest extends VueTestCase {
 
   /** @test */
   onLoadTracksAreRetrievedFromGateway () {
-    EventBus.$emit('openNewTrack','newTrack')
+    EventBus.$emit('openNewTrack', 'newTrack')
     this.assertEquals(3, this.SUT.tracks.length)
   }
 

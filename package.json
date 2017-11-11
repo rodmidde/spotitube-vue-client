@@ -8,7 +8,7 @@
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
     "serve": "http-server -o -c 1 -a localhost --port=9090",
     "dev": "npm-run-all --parallel watchify serve",
-    "lint": "eslint --ext .js,.vue src test/unit",
+    "lint": "eslint --ext .js,.vue src test",
     "test": "./node_modules/nyc/bin/nyc.js --reporter=lcov --e .vue ./node_modules/petrol/bin/petrol run",
     "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
   },
