@@ -2,8 +2,8 @@
     <div id="app" class="flex-container">
         <app-header class="header flex-item"/>
         <div  class="overview flex-container">
-            <app-playlists-overview class="flex-item playlists" v-if="token != ''"/>
-            <app-tracks-overview class="flex-item tracks" v-if="playlistId != ''"/>
+            <playlists-overview class="flex-item playlists" v-if="token != ''"/>
+            <tracks-overview class="flex-item tracks" v-if="playlistId != ''"/>
         </div>
         <login class="flex-item"/>
     </div>
@@ -12,16 +12,16 @@
 <script>
   import Login from './components/Login.vue'
   import AppHeader from './components/AppHeader.vue'
-  import AppPlaylistsOverview from './components/AppPlaylistsOverview.vue'
-  import AppTracksOverview from './components/AppTracksOverview.vue'
+  import PlaylistsOverview from './components/PlaylistsOverview.vue'
+  import TracksOverview from './components/TracksOverview.vue'
 
   export default {
     name: 'app',
     components: {
       Login,
       AppHeader,
-      AppTracksOverview,
-      AppPlaylistsOverview
+      TracksOverview,
+      PlaylistsOverview
     },
     created () {
       this.$bus.$on('token-set', token => {

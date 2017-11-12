@@ -5,8 +5,8 @@ import Vue from 'vue'
 import injector from 'vue-inject'
 
 Vue.use(injector)
-require('./mocks/apigateway.js')
-require('./mocks/localstorage.js')
+require('./stubs/apigateway.js')
+require('./stubs/localstorage.js')
 
 export default class LoginTest extends VueTestCase {
   beforeEach () {
@@ -19,7 +19,7 @@ export default class LoginTest extends VueTestCase {
     this.fillField('#userInput', 'test')
     this.fillField('#passInput', 'rody')
     this.click('#loginButton')
-    this.assertNotNull(this.SUT.token)
+    this.assertEquals(this.SUT.token, 'tokentje')
     EventBus.$emit('logged-out')
     this.assertEquals(this.SUT.token, '')
   }

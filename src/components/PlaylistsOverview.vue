@@ -1,5 +1,5 @@
 <template>
-    <div id="app-playlists-overview" class="modal-header">
+    <div id="playlists-overview" class="modal-header">
         <h3>Playlists</h3>
 
         <md-card class="flex-item">
@@ -33,7 +33,7 @@
   import UpdatePlaylistModal from './UpdatePlaylistModal.vue'
 
   export default {
-    name: 'app-playlists-overview',
+    name: 'playlists-overview',
     dependencies: ['apiGateway', 'localStorage'],
 
     components: {

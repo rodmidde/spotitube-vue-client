@@ -1,7 +1,7 @@
 <template>
     <md-card class="flex-item">
 
-    <div id="app-tracks-overview" class="modal-header">
+    <div id="tracks-overview" class="modal-header">
         <h3>Tracks</h3>
 
         <ul class="flex-container">
@@ -22,7 +22,7 @@
 import NewTrackModal from './NewTrackModal.vue'
 
 export default {
-  name: 'app-tracks-overview',
+  name: 'tracks-overview',
   dependencies: ['apiGateway', 'localStorage'],
   components: { NewTrackModal },
   created () {
