@@ -6,6 +6,8 @@ dist/build.js
 dist/build.css
 yarn-error.log
 npm-debug.log
+reveal.js
+.idea
 
 # Editor directories and files
 .vscode
