@@ -184,7 +184,9 @@ How to unit-test components
 ===========================
 Since we use dependency injection in our components we can stub or mock dependencies per component. But first we need a proper testcase and a test runner. When you use ```vue-cli``` it adds Karma (a test runner), Jasmine (a test dialect with asserts) and PhantomJS (a headless browser to run the code in/with). During the development of the Spotitube example we stumbled upon [Petrol](https://github.com/MGMonge/petrol) which is very simple to use and it works great together with vue-inject (unline Karma). 
 
-To switch from Karma to Petrol we need to change the package.json file on two places. Change the scripts.test property to the following value:
+To switch from Karma to Petrol we need to change the package.json file on several places. 
+
+Change the scripts.test property in the package.json file to the following value:
 
 ```{.json include="package.json" start="12" stop="12"}
 ```
@@ -192,6 +194,11 @@ To switch from Karma to Petrol we need to change the package.json file on two pl
 Also add Petrol to the list of devDependencies:
 
 ```{.json include="package.json" start="56" stop="56"}
+```
+
+Add Istanbul (nyc) to the list of devDependencies:
+
+```{.json include="package.json" start="59" stop="59"}
 ```
 
 Let's build a test for our Login.vue component which has dependencies on the ApiGateway and the LocalStorage. When the test is not run in an actual browser the LocalStorage is not available and the build a unit test (instead of an integration test) we need to stub or mock the ApiGateway:
@@ -218,6 +225,8 @@ This makes the Login.vue use the stubs instead of the real dependencies. The stu
 ```
 ```{.javascript include="test/stubs/apigateway.js" start="84" stop="86"}
 ```
+
+When you run ```npm run test``` all tests get executed but it also generates a coverage folder with LCOV-info that can be used by a code quality tool like SonarQube. 
 
 In this testcase we also see a call to a module called EventBus which is used to pass data between non-related (not in a parent-child hierarchy) components. More about the EventBus in the section "Between non-related components: using a simple event-bus". 
 
