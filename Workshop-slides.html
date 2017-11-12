@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Example Vue: Spotitube</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/ica-onderwijs.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+  <h1 class="title">Example Vue: Spotitube</h1>
+</section>
+
+<section id="preface" class="slide level1">
+<h1>Preface</h1>
+<p>In this example we'll use a simple case study called 'Spotitube' (a mashup between Spotify and YouTube to enable playlists with songs and videos) to demonstrate and explain some features of Vue.</p>
+</section>
+<section id="prerequisites" class="slide level1">
+<h1>Prerequisites</h1>
+<p>To use this example you need to install the following tools:</p>
+<ul>
+<li>Node.js (&gt;=4.x, 6.x preferred)</li>
+<li>Npm (minimum version &gt;= 3.0)</li>
+<li>Git</li>
+<li>A JavaScript IDE (WebStorm is free to use with a <a href="http://jetbrains.com/student">student license</a> from JetBrains)</li>
+<li>Vue.js <a href="https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd">devtools extension</a> for Chrome, a great tool to inspect events and the structure and state of components.</li>
+</ul>
+</section>
+<section id="how-to-create-run-and-lint-a-project" class="slide level1">
+<h1>How to create, run and lint a project</h1>
+<p>The easiest way to start a new Vue project is to use <a href="https://github.com/vuejs/vue-cli">Vue CLI</a>. When you've installed Vue CLI, you have the following options:</p>
+<ul>
+<li>vue init <a href="https://github.com/vuejs-templates/webpack">webpack</a> my-project</li>
+<li>vue init <a href="https://github.com/vuejs-templates/webpack-simple">webpack-simple</a> my-project</li>
+<li>vue init <a href="https://github.com/vuejs-templates/browserify">browserify</a> my-project</li>
+<li>vue init <a href="https://github.com/vuejs-templates/browserify-simple">browserify-simple</a> my-project</li>
+<li>vue init <a href="https://github.com/vuejs-templates/pwa">pwa</a> my-project</li>
+<li>vue init <a href="https://github.com/vuejs-templates/simple">simple</a> my-project</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<p>For a serious Vue application we need at least unit-testing and the browserify template is the least complex option. Vue init starts a simple dialog, fill in the required fields and answer &quot;Y&quot; when asked for &quot;Use ESLint to lint your code?&quot; and &quot;Setup unit tests with Karma + Jasmine?&quot;.</p>
+</section>
+<section class="slide level1">
+
+<p>You can use <code>npm run lint</code> to see if the JavaScript-code conforms to the ECMAScript-standard. Tools like WebStorm can also lint your code with ESLint or use <a href="https://www.sonarlint.org/intellij/">SonarLint</a> with the same profile so you can check if your code passed quality checks.</p>
+<p>After creating the project enter the project-directory and run <code>npm install</code> followed by <code>npm run dev</code>.</p>
+</section>
+<section class="slide level1">
+
+<p>The first command downloads all required libraries, including Karma and PhantomJS to run end-to-end and unit tests. Later we will replace Karma by <a href="https://github.com/MGMonge/petrol">Petrol</a> because of its simplicity and because it works great with vue-inject and other vue extensions.</p>
+<p>The second command actually runs the application in development mode. When you run the application in Chrome with the devtools extension installed and open the JavaScript console the screen looks like this:</p>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="src/assets/images/vue-cli-run.png" alt="Figure 1: Running the application with the devtools extension installed" /><figcaption>Figure 1: Running the application with the devtools extension installed</figcaption>
+</figure>
+<p>The screen shows the demo application provided with the template. During this example we're going to rebuild the <a href="http://ci.icaprojecten.nl/spotitube/">Spotitube</a> application in Vue. This application is built in Angular by <a href="https://github.com/meronbrouwer/oose-dea-eai-client">Meron Brouwer</a>, for this example we use a design that looks like the Angular version:</p>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="src/assets/images/spotitube-vue-login.png" alt="Figure 2: Login screen Spotitube" /><figcaption>Figure 2: Login screen Spotitube</figcaption>
+</figure>
+</section>
+<section class="slide level1">
+
+<figure>
+<img src="src/assets/images/spotitube-vue-playlists.png" alt="Figure 3: Playlists screen Spotitube" /><figcaption>Figure 3: Playlists screen Spotitube</figcaption>
+</figure>
+</section>
+<section class="slide level1">
+
+<p>When you look closely to the design, you might notice that some parts of the screen are (with a bit of imagination) reusable in other applications, like the header and a logout button. For this example we chose to split the screen into the following parts:</p>
+<figure>
+<img src="src/assets/images/spotitube-vue-playlists-components.png" alt="Figure 4: Playlists screen Spotitube in components" /><figcaption>Figure 4: Playlists screen Spotitube in components</figcaption>
+</figure>
+</section>
+<section class="slide level1">
+
+<p>There are also a few components that are not always visible like:</p>
+<ul>
+<li>the Login component</li>
+<li>some modal dialog components: NewTrackModal, NewPlaylistModal and UpdatePlaylistModal</li>
+</ul>
+</section>
+<section id="the-start-of-a-vue-application" class="slide level1">
+<h1>The start of a Vue application</h1>
+<p>A minimal Vue application has a html file and a javascript-file that get connected using a npm-script.</p>
+<div class="sourceCode" include="package.json" start="13" stop="13"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;build&quot;:</span> <span class="er">&quot;cross-env</span> <span class="er">NODE_ENV=production</span> <span class="er">browserify</span> <span class="er">-g</span> <span class="er">envify</span> <span class="er">-p</span> <span class="ot">[</span> <span class="er">vueify/plugins/extract-css</span> <span class="er">-o</span> <span class="er">dist/build.css</span> <span class="ot">]</span> <span class="er">-e</span> <span class="er">src/main.js</span> <span class="er">|</span> <span class="er">uglifyjs</span> <span class="er">-c</span> <span class="er">warnings=false</span> <span class="er">-m</span> <span class="er">&gt;</span> <span class="er">dist/build.js&quot;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>When running <code>npm run build</code> the main.js and all its dependencies get compiled with a tool called <a href="http://browserify.org/">browserify</a> into a javascript file called build.js. This build.js is the source for the html file:</p>
+<div class="sourceCode" include="index.html" start="1" stop="16"><pre class="sourceCode html"><code class="sourceCode html"><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span>
+<span class="kw">&lt;html</span><span class="ot"> lang=</span><span class="st">&quot;en&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span><span class="ot"> charset=</span><span class="st">&quot;utf-8&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;title&gt;</span>spotitube-client<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;dist/build.css&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;src/assets/css/modal.css&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;//fonts.googleapis.com/icon?family=Material+Icons&quot;</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;link</span><span class="ot"> rel=</span><span class="st">&quot;stylesheet&quot;</span><span class="ot"> href=</span><span class="st">&quot;node_modules/vue-material/dist/vue-material.css&quot;</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;/head&gt;</span>
+  <span class="kw">&lt;body&gt;</span>
+    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;app&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>
+    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;dist/build.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+  <span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>In this HTML-file we refer to several stylesheets:</p>
+<ul>
+<li>build.css, a compile stylesheet by browserify</li>
+<li>modal.css, a custom stylesheet for the application</li>
+<li>two fonts and the css to use the Material style from Google (we'll get back later how to add Vue Material to a Vue application)</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<p>The input for the <code>npm run build</code> steps is the main.js file:</p>
+<div class="sourceCode" include="src/main.js" start="4" stop="21"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> Vue <span class="im">from</span> <span class="st">&#39;vue&#39;</span>
+<span class="im">import</span> App <span class="im">from</span> <span class="st">&#39;./App.vue&#39;</span>
+<span class="im">import</span> VueLocalStorage <span class="im">from</span> <span class="st">&#39;vue-localstorage&#39;</span>
+<span class="im">import</span> injector <span class="im">from</span> <span class="st">&#39;vue-inject&#39;</span>
+<span class="kw">var</span> VueMaterial <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;vue-material&#39;</span>)
+
+<span class="va">Vue</span>.<span class="at">use</span>(VueMaterial)
+<span class="va">Vue</span>.<span class="at">use</span>(injector)
+<span class="va">Vue</span>.<span class="at">use</span>(VueLocalStorage)
+
+<span class="at">require</span>(<span class="st">&#39;./api/apigateway&#39;</span>)
+<span class="at">require</span>(<span class="st">&#39;./storage/localstorage&#39;</span>)
+<span class="at">require</span>(<span class="st">&#39;./events/event-bus&#39;</span>)
+
+<span class="kw">new</span> <span class="at">Vue</span>(<span class="op">{</span> <span class="co">// eslint-disable-line no-new</span>
+  <span class="dt">el</span><span class="op">:</span> <span class="st">&#39;#app&#39;</span><span class="op">,</span>
+  <span class="dt">render</span><span class="op">:</span> (h) <span class="op">=&gt;</span> <span class="at">h</span>(App)
+<span class="op">}</span>)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>This specific file is extended with extra libraries for Vue like <a href="https://www.npmjs.com/package/vue-localstorage">vue-localstorage</a>, <a href="https://www.npmjs.com/package/vue-inject">vue-inject</a> and <a href="https://www.npmjs.com/package/vue-material">vue-material</a>. It also has a few custom classes that we're going to use later on. The minimal setup for a main.js is:</p>
+<div class="sourceCode" include="src/main.js" start="4" stop="5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> Vue <span class="im">from</span> <span class="st">&#39;vue&#39;</span>
+<span class="im">import</span> App <span class="im">from</span> <span class="st">&#39;./App.vue&#39;</span></code></pre></div>
+<div class="sourceCode" include="src/main.js" start="18" stop="21"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">new</span> <span class="at">Vue</span>(<span class="op">{</span> <span class="co">// eslint-disable-line no-new</span>
+  <span class="dt">el</span><span class="op">:</span> <span class="st">&#39;#app&#39;</span><span class="op">,</span>
+  <span class="dt">render</span><span class="op">:</span> (h) <span class="op">=&gt;</span> <span class="at">h</span>(App)
+<span class="op">}</span>)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>The el property refers to the element-id:</p>
+<div class="sourceCode" include="index.html" start="13" stop="13"><pre class="sourceCode html"><code class="sourceCode html">    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;app&quot;</span><span class="kw">&gt;&lt;/div&gt;</span></code></pre></div>
+<p>The render method renders a Vue component called App.vue, let's see what the anatomy of a Vue component looks like.</p>
+</section>
+<section id="the-anatomy-of-a-vue-component" class="slide level1">
+<h1>The anatomy of a Vue Component</h1>
+<p>Every Vue component has at least a template (the <em>view</em>)and most of the time also some 'code behind' (a combination of a <em>model</em> and a <em>controller</em>). In the following paragraphs we'll use the App.vue component from the Spotitube application to show its parts.</p>
+</section>
+<section class="slide level1">
+
+<h2 id="templates-view">Templates (View)</h2>
+<p>The first part of the Vue components is the template:</p>
+<div class="sourceCode" include="src/App.vue" start="1" stop="10"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;template&gt;</span>
+    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;app&quot;</span><span class="ot"> class=</span><span class="st">&quot;flex-container&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;app-header</span><span class="ot"> class=</span><span class="st">&quot;header flex-item&quot;</span><span class="kw">/&gt;</span>
+        <span class="kw">&lt;div</span><span class="ot">  class=</span><span class="st">&quot;overview flex-container&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;playlists-overview</span><span class="ot"> class=</span><span class="st">&quot;flex-item playlists&quot;</span><span class="ot"> v-if=</span><span class="st">&quot;token != &#39;&#39;&quot;</span><span class="kw">/&gt;</span>
+            <span class="kw">&lt;tracks-overview</span><span class="ot"> class=</span><span class="st">&quot;flex-item tracks&quot;</span><span class="ot"> v-if=</span><span class="st">&quot;playlistId != &#39;&#39;&quot;</span><span class="kw">/&gt;</span>
+        <span class="kw">&lt;/div&gt;</span>
+        <span class="kw">&lt;login</span><span class="ot"> class=</span><span class="st">&quot;flex-item&quot;</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/template&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>Every template starts with a template tag and within the template tag some ordinary HTML-tags. Well, ordinary, you might notice tags like <code>app-header</code> and <code>login</code>. These tags refer to the names of other Vue components. Some components have some an extra Vue-attribute: <code>v-if</code>. This is called a <em>directive</em> and it can be used on a single tag or on a container tag like a div or even a template tag. This directive is used to do <em>conditional rendering</em> and can be used together with <code>v-else-if</code> and <code>v-else</code> but also has an alternative <code>v-show</code>.</p>
+</section>
+<section class="slide level1">
+
+<p>Look at the <a href="https://vuejs.org/v2/guide/conditional.html#v-if-vs-v-show">Vue documentation</a> for the exact difference. In de App.vue component the playlists-overview and playlit-overview components are only showed when a certain variable gets set.</p>
+</section>
+<section class="slide level1">
+
+<p>One of the components that is placed on the App.vue components is the Login component. Before we take a look at the code behind the controller the Login components shows us two nice features of Vue called <em>data binding</em> and <em>event handling</em>:</p>
+<div class="sourceCode" include="src/components/Login.vue" start="1" stop="25"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;template&gt;</span>
+    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;login&quot;</span><span class="ot"> v-if=</span><span class="st">&quot;token == &#39;&#39;&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;md-card&gt;</span>
+            <span class="kw">&lt;md-card-content&gt;</span>
+            <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;form-control&quot;</span><span class="kw">&gt;</span>
+                <span class="kw">&lt;label</span><span class="ot"> class=</span><span class="st">&quot;form-label&quot;</span><span class="kw">&gt;</span>
+                    Server URL
+                    <span class="kw">&lt;input</span><span class="ot"> id=</span><span class="st">&quot;urlInput&quot;</span><span class="ot"> class=</span><span class="st">&quot;form-control&quot;</span><span class="ot"> placeholder=</span><span class="st">&quot;Server URL&quot;</span><span class="ot"> v-model=</span><span class="st">&quot;serverlocation&quot;</span>
+<span class="ot">                           pattern=</span><span class="st">&quot;http://[a-zA-Z0-9:/.\-]+&quot;</span><span class="ot"> required</span><span class="kw">&gt;</span>
+                <span class="kw">&lt;/label&gt;</span>
+                <span class="kw">&lt;label</span><span class="ot"> class=</span><span class="st">&quot;form-label&quot;</span><span class="kw">&gt;</span>
+                    User
+                    <span class="kw">&lt;input</span><span class="ot"> id=</span><span class="st">&quot;userInput&quot;</span><span class="ot"> placeholder=</span><span class="st">&quot;User&quot;</span><span class="ot"> class=</span><span class="st">&quot;form-control&quot;</span><span class="ot"> v-model=</span><span class="st">&quot;user&quot;</span><span class="ot"> required</span><span class="kw">&gt;</span>
+                <span class="kw">&lt;/label&gt;</span>
+                <span class="kw">&lt;label</span><span class="ot"> class=</span><span class="st">&quot;form-label&quot;</span><span class="kw">&gt;</span>
+                    Password
+                    <span class="kw">&lt;input</span><span class="ot"> id=</span><span class="st">&quot;passInput&quot;</span><span class="ot"> type=</span><span class="st">&quot;password&quot;</span><span class="ot"> class=</span><span class="st">&quot;form-control&quot;</span><span class="ot"> placeholder=</span><span class="st">&quot;Password&quot;</span><span class="ot"> v-model=</span><span class="st">&quot;pass&quot;</span>
+<span class="ot">                           required</span><span class="kw">&gt;</span>
+                <span class="kw">&lt;/label&gt;</span>
+                <span class="kw">&lt;button</span><span class="ot"> id=</span><span class="st">&quot;loginButton&quot;</span><span class="ot"> v-on:click=</span><span class="st">&quot;executeLogin&quot;</span><span class="kw">&gt;</span>Login<span class="kw">&lt;/button&gt;</span>
+            <span class="kw">&lt;/div&gt;</span>
+            <span class="kw">&lt;/md-card-content&gt;</span>
+        <span class="kw">&lt;/md-card&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/template&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>There are three HTML elements with a <code>v-model</code> attribute set. This attribute causes a two-way binding between the template and its data: when a user changes the input, the data is changed and vice versa (e.g. when the data is altered by a REST-call). The login template also has a button, when it gets clicked the method <code>executeLogin</code> is executed. But where is this method located? And where is the data located for the <code>v-if</code> and <code>v-model</code> directives?</p>
+</section>
+<section class="slide level1">
+
+<p>When you need component specific CSS you can add a <code>style</code> tag at the bottom of the .vue file, these styles can be scoped so they can only be used by this single component:</p>
+<div class="sourceCode" include="src/App.vue" start="47" stop="52"><pre class="sourceCode css"><code class="sourceCode css">&lt;style scoped&gt;
+    <span class="fl">.overview</span> <span class="kw">{</span>
+        <span class="kw">height:</span> calc(<span class="dt">100%</span> - <span class="dt">64px</span>)<span class="kw">;</span>
+        <span class="kw">width:</span> <span class="dt">100%</span><span class="kw">;</span>
+    <span class="kw">}</span>
+&lt;/style&gt;</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="behaviour-model-data-and-controller-methods">Behaviour (Model: data and Controller: methods)</h2>
+<p>The behaviour of a Vue component is determined by its methods and it data. Let's first take a look at the behaviour of the App.vue component:</p>
+<div class="sourceCode" include="src/App.vue" start="12" stop="26"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="op">&lt;</span>script<span class="op">&gt;</span>
+  <span class="im">import</span> Login <span class="im">from</span> <span class="st">&#39;./components/Login.vue&#39;</span>
+  <span class="im">import</span> AppHeader <span class="im">from</span> <span class="st">&#39;./components/AppHeader.vue&#39;</span>
+  <span class="im">import</span> PlaylistsOverview <span class="im">from</span> <span class="st">&#39;./components/PlaylistsOverview.vue&#39;</span>
+  <span class="im">import</span> TracksOverview <span class="im">from</span> <span class="st">&#39;./components/TracksOverview.vue&#39;</span>
+
+  <span class="im">export</span> <span class="im">default</span> <span class="op">{</span>
+    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;app&#39;</span><span class="op">,</span>
+    <span class="dt">components</span><span class="op">:</span> <span class="op">{</span>
+      Login<span class="op">,</span>
+      AppHeader<span class="op">,</span>
+      TracksOverview<span class="op">,</span>
+      PlaylistsOverview
+    <span class="op">},</span>
+    <span class="at">created</span> () <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/App.vue" start="37" stop="45"><pre class="sourceCode javascript"><code class="sourceCode javascript">    }<span class="op">,</span>
+    <span class="at">data</span> () <span class="op">{</span>
+      <span class="cf">return</span> <span class="op">{</span>
+        <span class="dt">token</span><span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">,</span>
+        <span class="dt">playlistId</span><span class="op">:</span> <span class="st">&#39;&#39;</span>
+      <span class="op">}</span>
+    <span class="op">}</span>
+  }
+<span class="op">&lt;</span><span class="ss">/script&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>It starts (and ends) with a <code>script</code> tag and a few imports to locate the inner components like the Login.vue component which are contained in a property called <code>components</code>. The name is set by a property called name and together with a data property it it contained in a simple JavaScript object (<code>{}</code>). This components also contains a property (a <em>lifecycle hook</em>) called <code>created</code>, the lines in this property are executed when the components gets created during the lifecycle.</p>
+</section>
+<section class="slide level1">
+
+<p>Besides the created hook a Vue component can contain <a href="https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks">other hooks</a>:</p>
+<ul>
+<li>beforeCreate</li>
+<li>beforeMount</li>
+<li>mounted</li>
+<li>beforeUpdate</li>
+<li>updated</li>
+<li>beforeDestroy</li>
+<li>destroy</li>
+</ul>
+<p>In this example we only use the created hook.</p>
+</section>
+<section class="slide level1">
+
+<p>The App.vue components has no methods, however the Login.vue component has:</p>
+<div class="sourceCode" include="src/components/Login.vue" start="27" stop="31"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="op">&lt;</span>script<span class="op">&gt;</span>
+  <span class="im">export</span> <span class="im">default</span> <span class="op">{</span>
+    <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;login&#39;</span><span class="op">,</span>
+    <span class="dt">dependencies</span><span class="op">:</span> [<span class="st">&#39;apiGateway&#39;</span><span class="op">,</span> <span class="st">&#39;localStorage&#39;</span>]<span class="op">,</span>
+    <span class="at">created</span> () <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/components/Login.vue" start="36" stop="48"><pre class="sourceCode javascript"><code class="sourceCode javascript">    }<span class="op">,</span>
+    <span class="at">data</span> () <span class="op">{</span>
+      <span class="cf">return</span> <span class="op">{</span>
+        <span class="dt">user</span><span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">,</span>
+        <span class="dt">pass</span><span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">,</span>
+        <span class="dt">serverlocation</span><span class="op">:</span> <span class="st">&#39;&#39;</span><span class="op">,</span>
+        <span class="dt">token</span><span class="op">:</span> <span class="st">&#39;&#39;</span>
+      <span class="op">}</span>
+    <span class="op">},</span>
+    methods<span class="op">:</span> <span class="op">{</span>
+      <span class="dt">executeLogin</span><span class="op">:</span> <span class="kw">function</span> () <span class="op">{</span>
+        <span class="kw">this</span>.<span class="va">apiGateway</span>.<span class="at">login</span>(<span class="kw">this</span>.<span class="at">user</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">pass</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">serverlocation</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">setToken</span>)
+      <span class="op">},</span></code></pre></div>
+<div class="sourceCode" include="src/components/Login.vue" start="54" stop="56"><pre class="sourceCode javascript"><code class="sourceCode javascript">    }
+  }
+<span class="op">&lt;</span><span class="ss">/script&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>The method <code>executeLogin</code> is executed when the button with id &quot;loginButton&quot; is clicked. This method delegates it behaviour to a helper object called apiGateway (implements Fowler's <a href="https://martinfowler.com/eaaCatalog/gateway.html">Gateway pattern</a>)from the 'class' (between quotes for now, but you can actually use classes with TypeScript) ApiGateway.</p>
+</section>
+<section class="slide level1">
+
+<p>This helper object is used in the list of dependencies, a non standard property of a Vue component. Non standard because it is used by a companion library called <code>vue-inject</code> that adds dependency injection capabilities to Vue. Instead of creating an instance (or reference) to the ApiGateway we rely on vue-inject to do that for us. This makes our code cleaner and improves testability.</p>
+</section>
+<section class="slide level1">
+
+<p>The vue-inject library is already added to the main.js and it's going to resolve all the dependencies of components by looking at its reference name ('apiGateway') and looking it up in the injector.</p>
+</section>
+<section class="slide level1">
+
+<p>For the ApiGateway to be found by vue-inject it must register itself with the injector (method contents of ApiGateway are left empty to improve readability):</p>
+<div class="sourceCode" include="src/api/apigateway.js" start="1" stop="5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> axios <span class="im">from</span> <span class="st">&#39;axios&#39;</span>
+<span class="im">import</span> injector <span class="im">from</span> <span class="st">&#39;vue-inject&#39;</span>
+
+<span class="im">export</span> <span class="kw">class</span> ApiGateway <span class="op">{</span>
+  <span class="at">login</span> (user<span class="op">,</span> pass<span class="op">,</span> serverlocation<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="18" stop="20"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">getPlaylists</span> (token<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="28" stop="30"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">deletePlaylist</span> (token<span class="op">,</span> id<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="38" stop="40"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">addPlaylist</span> (token<span class="op">,</span> name<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="52" stop="54"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">updatePlaylist</span> (token<span class="op">,</span> id<span class="op">,</span> name<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="66" stop="68"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">getTracks</span> (token<span class="op">,</span> id<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="76" stop="78"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">addTrackToPlaylist</span> (token<span class="op">,</span> playlistid<span class="op">,</span> track<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="86" stop="88"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">removeTrackFromPlaylist</span> (token<span class="op">,</span> playlistid<span class="op">,</span> trackid<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="96" stop="98"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+
+  <span class="at">getAllTracksNotInPlaylist</span> (token<span class="op">,</span> playlistid<span class="op">,</span> callback) <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="106" stop="109"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+}
+
+<span class="va">injector</span>.<span class="at">service</span>(<span class="st">&#39;apiGateway&#39;</span><span class="op">,</span> ApiGateway)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>The injector is imported together with the Axios library which is used to create REST calls later in the example. The last line of the ApiGateway injects an instance to the application with the name 'apiGateway' so it can be resolved by vue-inject when components have one or more dependencies.</p>
+</section>
+<section id="how-to-unit-test-components" class="slide level1">
+<h1>How to unit-test components</h1>
+<p>Since we use dependency injection in our components we can stub or mock dependencies per component. But first we need a proper testcase and a test runner. When you use <code>vue-cli</code> it adds Karma (a test runner), Jasmine (a test dialect with asserts) and PhantomJS (a headless browser to run the code in/with).</p>
+</section>
+<section class="slide level1">
+
+<p>During the development of the Spotitube example we stumbled upon <a href="https://github.com/MGMonge/petrol">Petrol</a> which is very simple to use and it works great together with vue-inject (unline Karma).</p>
+</section>
+<section class="slide level1">
+
+<p>To switch from Karma to Petrol we need to change the package.json file on several places. Change the scripts.test property in the package.json file to the following value:</p>
+<div class="sourceCode" include="package.json" start="12" stop="12"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;test&quot;:</span> <span class="er">&quot;./node_modules/nyc/bin/nyc.js</span> <span class="er">--reporter=lcov</span> <span class="er">--e</span> <span class="er">.vue</span> <span class="er">./node_modules/petrol/bin/petrol</span> <span class="er">run&quot;,</span></code></pre></div>
+<p>Also add Petrol to the list of devDependencies:</p>
+<div class="sourceCode" include="package.json" start="56" stop="56"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;petrol&quot;:</span> <span class="er">&quot;^1.0.10&quot;,</span></code></pre></div>
+<p>Add Istanbul (nyc) to the list of devDependencies:</p>
+<div class="sourceCode" include="package.json" start="59" stop="59"><pre class="sourceCode json"><code class="sourceCode json">    <span class="er">&quot;nyc&quot;:&quot;^11.3.0&quot;,</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>Let's build a test for our Login.vue component which has dependencies on the ApiGateway and the LocalStorage. When the test is not run in an actual browser the LocalStorage is not available and the build a unit test (instead of an integration test) we need to stub or mock the ApiGateway:</p>
+<div class="sourceCode" include="test/LoginTest.js"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> VueTestCase <span class="im">from</span> <span class="st">&#39;petrol/core/VueTestCase&#39;</span>
+<span class="im">import</span> Login <span class="im">from</span> <span class="st">&#39;../src/components/Login.vue&#39;</span>
+<span class="im">import</span> <span class="op">{</span>EventBus<span class="op">}</span> <span class="im">from</span> <span class="st">&#39;../src/events/event-bus.js&#39;</span>
+<span class="im">import</span> Vue <span class="im">from</span> <span class="st">&#39;vue&#39;</span>
+<span class="im">import</span> injector <span class="im">from</span> <span class="st">&#39;vue-inject&#39;</span>
+
+<span class="va">Vue</span>.<span class="at">use</span>(injector)
+<span class="at">require</span>(<span class="st">&#39;./stubs/apigateway.js&#39;</span>)
+<span class="at">require</span>(<span class="st">&#39;./stubs/localstorage.js&#39;</span>)
+
+<span class="im">export</span> <span class="im">default</span> <span class="kw">class</span> LoginTest <span class="kw">extends</span> VueTestCase <span class="op">{</span>
+  <span class="at">beforeEach</span> () <span class="op">{</span>
+    <span class="kw">this</span>.<span class="at">SUT</span> <span class="op">=</span> <span class="kw">this</span>.<span class="at">mount</span>(Login)
+  <span class="op">}</span>
+
+  <span class="co">/** </span><span class="kw">@test</span><span class="co"> */</span>
+  <span class="at">correctLoginAndLogoutFlow</span> () <span class="op">{</span>
+    <span class="kw">this</span>.<span class="at">fillField</span>(<span class="st">&#39;#urlInput&#39;</span><span class="op">,</span> <span class="st">&#39;http://localhost:8080&#39;</span>)
+    <span class="kw">this</span>.<span class="at">fillField</span>(<span class="st">&#39;#userInput&#39;</span><span class="op">,</span> <span class="st">&#39;test&#39;</span>)
+    <span class="kw">this</span>.<span class="at">fillField</span>(<span class="st">&#39;#passInput&#39;</span><span class="op">,</span> <span class="st">&#39;rody&#39;</span>)
+    <span class="kw">this</span>.<span class="at">click</span>(<span class="st">&#39;#loginButton&#39;</span>)
+    <span class="kw">this</span>.<span class="at">assertEquals</span>(<span class="kw">this</span>.<span class="va">SUT</span>.<span class="at">token</span><span class="op">,</span> <span class="st">&#39;tokentje&#39;</span>)
+    <span class="va">EventBus</span>.<span class="at">$emit</span>(<span class="st">&#39;logged-out&#39;</span>)
+    <span class="kw">this</span>.<span class="at">assertEquals</span>(<span class="kw">this</span>.<span class="va">SUT</span>.<span class="at">token</span><span class="op">,</span> <span class="st">&#39;&#39;</span>)
+  <span class="op">}</span>
+
+  <span class="co">/** </span><span class="kw">@test</span><span class="co"> */</span>
+  <span class="at">receivesNoTokenWhenLoginCredentialsAreIncorrect</span> () <span class="op">{</span>
+    <span class="kw">this</span>.<span class="at">fillField</span>(<span class="st">&#39;#urlInput&#39;</span><span class="op">,</span> <span class="st">&#39;http://localhost:8080&#39;</span>)
+    <span class="kw">this</span>.<span class="at">fillField</span>(<span class="st">&#39;#userInput&#39;</span><span class="op">,</span> <span class="st">&#39;test&#39;</span>)
+    <span class="kw">this</span>.<span class="at">fillField</span>(<span class="st">&#39;#passInput&#39;</span><span class="op">,</span> <span class="st">&#39;rody_&#39;</span>)
+    <span class="kw">this</span>.<span class="at">click</span>(<span class="st">&#39;#loginButton&#39;</span>)
+    <span class="kw">this</span>.<span class="at">assertEquals</span>(<span class="kw">this</span>.<span class="va">SUT</span>.<span class="at">token</span><span class="op">,</span> <span class="st">&#39;&#39;</span>)
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>A Petrol testcase for Vue Components extends the VueTestCase class so we can refer to the SUT (<a href="https://testing.googleblog.com/2013/07/testing-on-toilet-know-your-test-doubles.html">Subject Under Test</a>) and the mount function to trigger the mount and created hooks on the component.</p>
+</section>
+<section class="slide level1">
+
+<p>Petrol has a beforeEach (<code>@Before</code> in JUnit) that is called before every test function. A test function starts with test or gets annotated with <code>/** @test */</code>.</p>
+</section>
+<section class="slide level1">
+
+<p>In a test function you can refer to the component with <code>this.SUT</code> and to several cool VueTestCase functions like:</p>
+<ul>
+<li><code>this.assertEquals</code>, asserts that determine the pass/failure of the testcase</li>
+<li><code>this.fillField</code>, fill a field like a user should. First parameter is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector">querySelector</a>, second parameter is the value to fill the field with.<br />
+</li>
+<li><code>click</code>, forces a click event on a HTML-element given the querySelector</li>
+</ul>
+</section>
+<section class="slide level1">
+
+<p>Properties (data-fields) can be read easily, e.g. <code>this.SUT.token</code>. For this testcase two test doubles (stubs) are used in combination with vue-inject:</p>
+<div class="sourceCode" include="test/LoginTest.js" start="7" stop="9"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="va">Vue</span>.<span class="at">use</span>(injector)
+<span class="at">require</span>(<span class="st">&#39;./stubs/apigateway.js&#39;</span>)
+<span class="at">require</span>(<span class="st">&#39;./stubs/localstorage.js&#39;</span>)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>This makes the Login.vue use the stubs instead of the real dependencies. The stubs are prepared to generate return values just to make the tests pass:</p>
+<div class="sourceCode" include="test/stubs/apigateway.js" start="1" stop="6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> injector <span class="im">from</span> <span class="st">&#39;vue-inject&#39;</span>
+
+<span class="im">export</span> <span class="kw">class</span> ApiGateway <span class="op">{</span>
+  <span class="at">login</span> (user<span class="op">,</span> pass<span class="op">,</span> serverlocation<span class="op">,</span> callback) <span class="op">{</span>
+    <span class="cf">if</span> (pass <span class="op">===</span> <span class="st">&#39;rody&#39;</span>) <span class="at">callback</span>(<span class="st">&#39;tokentje&#39;</span>)
+  <span class="op">}</span></code></pre></div>
+<div class="sourceCode" include="test/stubs/apigateway.js" start="84" stop="86"><pre class="sourceCode javascript"><code class="sourceCode javascript">}
+
+<span class="va">injector</span>.<span class="at">service</span>(<span class="st">&#39;apiGateway&#39;</span><span class="op">,</span> ApiGateway)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>When you run <code>npm run test</code> all tests get executed but it also generates a coverage folder with LCOV-info that can be used by a code quality tool like SonarQube.</p>
+</section>
+<section class="slide level1">
+
+<p>In this testcase we also see a call to a module called EventBus which is used to pass data between non-related (not in a parent-child hierarchy) components. More about the EventBus in the section &quot;Between non-related components: using a simple event-bus&quot;.</p>
+</section>
+<section id="how-to-exhange-data-between-components" class="slide level1">
+<h1>How to exhange data between components</h1>
+<p>Good components have a clear interface and follow good design guidelines like low coupling and high cohesion.</p>
+</section>
+<section class="slide level1">
+
+<p>Vue components also have a clear boundary and besides their dependencies on helper classes in most cases these components don't &quot;know&quot; about other components' existence which is a good point from a design point of view but as a developer you need to exchange data between these components, what are your options?</p>
+</section>
+<section class="slide level1">
+
+<h2 id="between-a-parent-and-child-component-properties">Between a parent and child component: properties</h2>
+<p>When a component has child components there is a strong relation between these components but there is no object reference to access data or methods. To exchange data between parent and child components Vue has <em>properties</em> defined by the props attribute. Suppose we need to add tracks to a selected playlist, how are we going to pass the selected playlist from the TracksOverview.vue component to a modal dialog to select a new track for this playlist?</p>
+</section>
+<section class="slide level1">
+
+<p>Given the following template of the TracksOverview.vue component:</p>
+<div class="sourceCode" include="src/components/TracksOverview.vue" start="1" stop="20"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;template&gt;</span>
+    <span class="kw">&lt;md-card</span><span class="ot"> class=</span><span class="st">&quot;flex-item&quot;</span><span class="kw">&gt;</span>
+
+    <span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;tracks-overview&quot;</span><span class="ot"> class=</span><span class="st">&quot;modal-header&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;h3&gt;</span>Tracks<span class="kw">&lt;/h3&gt;</span>
+
+        <span class="kw">&lt;ul</span><span class="ot"> class=</span><span class="st">&quot;flex-container&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;li</span><span class="ot"> v-for=</span><span class="st">&quot;track in tracks&quot;</span><span class="ot"> class=</span><span class="st">&quot;flex-item flex-container&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;playlist-name&quot;</span><span class="kw">&gt;</span>{{ track.title }}<span class="kw">&lt;/span&gt;</span>
+            <span class="kw">&lt;button</span><span class="ot"> v-on:click=</span><span class="st">&quot;executeDelete(track.id)&quot;</span><span class="kw">&gt;&lt;md-icon&gt;</span>delete<span class="kw">&lt;/md-icon&gt;&lt;/button&gt;</span>
+        <span class="kw">&lt;/li&gt;</span>
+        <span class="kw">&lt;/ul&gt;</span>
+        <span class="kw">&lt;button</span> <span class="er">@click</span><span class="ot">=</span><span class="st">&quot;openDialog(&#39;newTrack&#39;)&quot;</span><span class="ot"> class=</span><span class="st">&quot;add-button&quot;</span><span class="ot"> id=</span><span class="st">&quot;openNewTrackButton&quot;</span><span class="kw">&gt;</span>
+            <span class="kw">&lt;md-icon&gt;</span>add<span class="kw">&lt;/md-icon&gt;</span>
+        <span class="kw">&lt;/button&gt;</span>
+    <span class="kw">&lt;/div&gt;</span>
+    <span class="kw">&lt;new-track-modal</span><span class="ot"> :playlistid=</span><span class="st">&quot;playlistId&quot;</span><span class="kw">&gt;&lt;/new-track-modal&gt;</span>
+    <span class="kw">&lt;/md-card&gt;</span>
+<span class="kw">&lt;/template&gt;</span>
+</code></pre></div>
+<div class="sourceCode" include="src/components/TracksOverview.vue" start="21" stop="28"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="op">&lt;</span>script<span class="op">&gt;</span>
+<span class="im">import</span> NewTrackModal <span class="im">from</span> <span class="st">&#39;./NewTrackModal.vue&#39;</span>
+
+<span class="im">export</span> <span class="im">default</span> <span class="op">{</span>
+  <span class="dt">name</span><span class="op">:</span> <span class="st">&#39;tracks-overview&#39;</span><span class="op">,</span>
+  <span class="dt">dependencies</span><span class="op">:</span> [<span class="st">&#39;apiGateway&#39;</span><span class="op">,</span> <span class="st">&#39;localStorage&#39;</span>]<span class="op">,</span>
+  <span class="dt">components</span><span class="op">:</span> <span class="op">{</span> NewTrackModal <span class="op">},</span>
+  <span class="at">created</span> () <span class="op">{</span></code></pre></div>
+<div class="sourceCode" include="src/components/TracksOverview.vue" start="39" stop="49"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }<span class="op">,</span>
+  <span class="at">data</span> () <span class="op">{</span>
+    <span class="cf">return</span> <span class="op">{</span>
+      <span class="dt">tracks</span><span class="op">:</span> []<span class="op">,</span>
+      <span class="dt">playlistId</span><span class="op">:</span> <span class="st">&#39;&#39;</span>
+    <span class="op">}</span>
+  <span class="op">},</span>
+  methods<span class="op">:</span> <span class="op">{</span>
+    <span class="at">openDialog</span> (ref) <span class="op">{</span>
+      <span class="kw">this</span>.<span class="va">$bus</span>.<span class="at">$emit</span>(<span class="st">&#39;openNewTrack&#39;</span><span class="op">,</span> ref)
+    <span class="op">},</span></code></pre></div>
+<div class="sourceCode" include="src/components/TracksOverview.vue" start="60" stop="62"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+}
+<span class="op">&lt;</span><span class="ss">/script&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>A cool thing about this template is that is also shows a Vue directive called <code>v-for</code> that can be used to iterate over a collection (e.g. an array). The template of the TracksOverview.vue components refers to a child component called NewTrackModal, a modal dialog for the user to select a track to add to the current playlist.</p>
+</section>
+<section class="slide level1">
+
+<p>The TracksOverview.vue has a playlistId and passes it to the dialog:</p>
+<div class="sourceCode" include="src/components/TracksOverview.vue" start="17" stop="17"><pre class="sourceCode html"><code class="sourceCode html">    <span class="kw">&lt;new-track-modal</span><span class="ot"> :playlistid=</span><span class="st">&quot;playlistId&quot;</span><span class="kw">&gt;&lt;/new-track-modal&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>The :playlistid property refers to a defined property in the code behind of the NewTrackModal.vue component:</p>
+<div class="sourceCode" include="src/components/NewTrackModal.vue" start="20" stop="37"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="op">&lt;</span>script<span class="op">&gt;</span>
+  <span class="im">export</span> <span class="im">default</span> <span class="op">{</span>
+    <span class="dt">template</span><span class="op">:</span> <span class="st">&#39;#new-playlist-modal-template&#39;</span><span class="op">,</span>
+    <span class="dt">dependencies</span><span class="op">:</span> [<span class="st">&#39;apiGateway&#39;</span><span class="op">,</span> <span class="st">&#39;localStorage&#39;</span>]<span class="op">,</span>
+    <span class="dt">props</span><span class="op">:</span> [<span class="st">&#39;playlistid&#39;</span>]<span class="op">,</span>
+    <span class="dt">data</span><span class="op">:</span> <span class="kw">function</span> () <span class="op">{</span>
+      <span class="cf">return</span> <span class="op">{</span>
+        <span class="dt">tracks</span><span class="op">:</span> []<span class="op">,</span>
+        <span class="dt">track</span><span class="op">:</span> <span class="op">{},</span>
+        <span class="dt">selected</span><span class="op">:</span> <span class="st">&#39;&#39;</span>
+      <span class="op">}</span>
+    <span class="op">},</span>
+    <span class="at">created</span> () <span class="op">{</span>
+      <span class="kw">this</span>.<span class="va">$bus</span>.<span class="at">$on</span>(<span class="st">&#39;openNewTrack&#39;</span><span class="op">,</span> ref <span class="op">=&gt;</span> <span class="op">{</span>
+        <span class="kw">this</span>.<span class="at">$refs</span>[ref].<span class="at">open</span>()
+        <span class="kw">this</span>.<span class="va">apiGateway</span>.<span class="at">getAllTracksNotInPlaylist</span>(<span class="kw">this</span>.<span class="va">localStorage</span>.<span class="at">get</span>(<span class="st">&#39;token&#39;</span>)<span class="op">,</span> <span class="kw">this</span>.<span class="at">playlistid</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">setTracks</span>)
+      <span class="op">}</span>)
+    <span class="op">},</span></code></pre></div>
+<div class="sourceCode" include="src/components/NewTrackModal.vue" start="57" stop="58"><pre class="sourceCode javascript"><code class="sourceCode javascript">  }
+<span class="op">&lt;</span><span class="ss">/script&gt;</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>This <em>binding</em> is one-way instead of the <code>v-model</code> directive that we used earlier in this example. That means that a child-component can <em>read</em> the property and not alter it, if you try to do so Vue will show an error in the JavaScript-console in the browser.</p>
+</section>
+<section class="slide level1">
+
+<p>Notice that these code snippets also refer to $bus, a simple event bus to generate ($emit) and listen to ($on) developer-defined events. This eventbus is used to determine when the modal dialog has to be shown and hidden, normally a <code>v-if</code> or <code>v-show</code> directive would do, but this example depends on Material which needs a special kind of opening and closing dialogs.</p>
+</section>
+<section class="slide level1">
+
+<h2 id="between-non-related-components-using-a-simple-event-bus">Between non-related components: using a simple event-bus</h2>
+<p>In the LoginTest testcase we already saw the EventBus being used. The source code for this module is simple:</p>
+<div class="sourceCode" include="src/events/event-bus.js"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> Vue <span class="im">from</span> <span class="st">&#39;vue&#39;</span>
+<span class="im">export</span> <span class="kw">const</span> EventBus <span class="op">=</span> <span class="kw">new</span> <span class="at">Vue</span>()
+<span class="va">Object</span>.<span class="at">defineProperties</span>(<span class="va">Vue</span>.<span class="at">prototype</span><span class="op">,</span> <span class="op">{</span>
+  <span class="dt">$bus</span><span class="op">:</span> <span class="op">{</span>
+    <span class="dt">get</span><span class="op">:</span> <span class="kw">function</span> () <span class="op">{</span>
+      <span class="cf">return</span> EventBus
+    <span class="op">}</span>
+  <span class="op">}</span>
+<span class="op">}</span>)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>It creates an instance of Vue and passes it to every JavaScript object using the prototype and makes it accessible with the $bus property. Events can be generated using the $emit function:</p>
+<div class="sourceCode" include="src/components/TracksOverview.vue" start="47" stop="49"><pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="at">openDialog</span> (ref) <span class="op">{</span>
+      <span class="kw">this</span>.<span class="va">$bus</span>.<span class="at">$emit</span>(<span class="st">&#39;openNewTrack&#39;</span><span class="op">,</span> ref)
+    <span class="op">},</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>Events can be received using the $on function, in most cases we start listening to incoming events in the created hook:</p>
+<div class="sourceCode" include="src/components/NewTrackModal.vue" start="32" stop="37"><pre class="sourceCode javascript"><code class="sourceCode javascript">    <span class="at">created</span> () <span class="op">{</span>
+      <span class="kw">this</span>.<span class="va">$bus</span>.<span class="at">$on</span>(<span class="st">&#39;openNewTrack&#39;</span><span class="op">,</span> ref <span class="op">=&gt;</span> <span class="op">{</span>
+        <span class="kw">this</span>.<span class="at">$refs</span>[ref].<span class="at">open</span>()
+        <span class="kw">this</span>.<span class="va">apiGateway</span>.<span class="at">getAllTracksNotInPlaylist</span>(<span class="kw">this</span>.<span class="va">localStorage</span>.<span class="at">get</span>(<span class="st">&#39;token&#39;</span>)<span class="op">,</span> <span class="kw">this</span>.<span class="at">playlistid</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">setTracks</span>)
+      <span class="op">}</span>)
+    <span class="op">},</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>This sequence diagram shows how the components work together using a property and the event-bus to open a dialog:</p>
+<!-- title How to use the EventBus to communicate between Vue components -->
+<!-- User->Vue: startApp -->
+<!-- Vue->EventBus($bus):initialize -->
+<!-- Vue->TracksOverview:Mount/Create -->
+<!-- note over NewTrackModal,TracksOverview:Passes playlistId with a Vue property on the component. -->
+<!-- TracksOverview->NewTrackModal:Mount/Create(this.playlistId) -->
+<!-- NewTrackModal->EventBus($bus):$on('openNewTrack') -->
+<!-- User->TracksOverview: Button 'addTrack' clicked -->
+<!-- TracksOverview->TracksOverview: openDialog('newTrack') -->
+<!-- TracksOverview->EventBus($bus): $emit('openNewTrack', 'newTrack') -->
+<!-- EventBus($bus)->NewTrackModal: openNewTrackEvent! -->
+<!-- NewTrackModal->NewTrackModal: this.$refs['newTrack'].open() -->
+<!-- NewTrackModal->ApiGateway:data.tracks = getAllTracksNotInPlaylist(playlistId) -->
+<figure>
+<img src="src/assets/images/seq-diagram-eventbus.png" alt="Figure 5: Sequence diagram to show how components can share data" /><figcaption>Figure 5: Sequence diagram to show how components can share data</figcaption>
+</figure>
+</section>
+<section class="slide level1">
+
+<h2 id="between-non-related-components-using-a-shared-store-component">Between non-related components: using a shared store component</h2>
+<p>The Vue documentation advises to only use the event-bus in simple cases and to use a shared store component in more complex cases. Vue offers several ways to handle state management:</p>
+<ul>
+<li><a href="https://github.com/vuejs/vuex">Vuex</a>, a <a href="https://github.com/facebook/flux/tree/master/examples">flux-like</a> implementation</li>
+<li>Reacts' <a href="https://github.com/egoist/revue">Redux</a> with simple bindings to use in Vue</li>
+<li>Build a simple store component <a href="https://vuejs.org/v2/guide/state-management.html#Simple-State-Management-from-Scratch">yourself</a></li>
+</ul>
+<p>Look into one or more of these options yourself when the event-bus solutions gets to messy or untestable.</p>
+</section>
+<section class="slide level1">
+
+<h2 id="how-to-communicate-with-rest-services-using-axios">How to communicate with REST services using Axios</h2>
+<p>How does a Vue application communicate with a backend? Due to its simplicity Vue doesn't have features to communicate with REST-services but it's easy to extend Vue with extra libraries, for this example we use <a href="https://github.com/axios/axios">Axios</a>, a promise based HTTP client.</p>
+</section>
+<section class="slide level1">
+
+<h2 id="axios-supports-all-http-verbs-by-providing-seperate-functions-get-post-delete-put-etc.-but-you-can-also-use-a-generic-request-and-tell-axios-what-verb-to-use.">Axios supports all HTTP verbs by providing seperate functions (get, post, delete, put, etc.) but you can also use a generic request and tell Axios what verb to use.</h2>
+<p>Before you can use Axios, it need to be added to the package.json file:</p>
+<div class="sourceCode" include="package.json" start="24" stop="25"><pre class="sourceCode json"><code class="sourceCode json">  <span class="er">&quot;dependencies&quot;:</span> <span class="fu">{</span>
+    <span class="dt">&quot;axios&quot;</span><span class="fu">:</span> <span class="st">&quot;^0.17.0&quot;</span><span class="fu">,</span></code></pre></div>
+<div class="sourceCode" include="package.json" start="31" stop="31"><pre class="sourceCode json"><code class="sourceCode json">  <span class="er">},</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>Libraries like Axios work asynchronous so you need to work with the <a href="https://developers.google.com/web/fundamentals/primers/promises">Promise API</a> or use a simple callback function, in this example we used a callback function, for instance in the Login.vue component:</p>
+<div class="sourceCode" include="src/components/Login.vue" start="45" stop="54"><pre class="sourceCode javascript"><code class="sourceCode javascript">    methods<span class="op">:</span> <span class="op">{</span>
+      <span class="dt">executeLogin</span><span class="op">:</span> <span class="kw">function</span> () <span class="op">{</span>
+        <span class="kw">this</span>.<span class="va">apiGateway</span>.<span class="at">login</span>(<span class="kw">this</span>.<span class="at">user</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">pass</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">serverlocation</span><span class="op">,</span> <span class="kw">this</span>.<span class="at">setToken</span>)
+      <span class="op">},</span>
+      <span class="dt">setToken</span><span class="op">:</span> <span class="kw">function</span> (token) <span class="op">{</span>
+        <span class="kw">this</span>.<span class="va">localStorage</span>.<span class="at">set</span>(<span class="st">&#39;token&#39;</span><span class="op">,</span> token)
+        <span class="kw">this</span>.<span class="at">token</span> <span class="op">=</span> token
+        <span class="kw">this</span>.<span class="va">$bus</span>.<span class="at">$emit</span>(<span class="st">&#39;token-set&#39;</span><span class="op">,</span> <span class="op">{</span><span class="st">&#39;token&#39;</span><span class="op">:</span> <span class="kw">this</span>.<span class="at">token</span><span class="op">,</span> <span class="st">&#39;user&#39;</span><span class="op">:</span> <span class="kw">this</span>.<span class="at">user</span><span class="op">,</span> <span class="st">&#39;serverlocation&#39;</span><span class="op">:</span> <span class="kw">this</span>.<span class="at">serverlocation</span><span class="op">}</span>)
+      <span class="op">}</span>
+    <span class="op">}</span></code></pre></div>
+</section>
+<section class="slide level1">
+
+<p>The Login.vue component calls the ApiGateway to request a login and registers a callback function that can be executed by the ApiGateway when the REST-call receives a response:</p>
+<div class="sourceCode" include="src/api/apigateway.js" start="1" stop="18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="im">import</span> axios <span class="im">from</span> <span class="st">&#39;axios&#39;</span>
+<span class="im">import</span> injector <span class="im">from</span> <span class="st">&#39;vue-inject&#39;</span>
+
+<span class="im">export</span> <span class="kw">class</span> ApiGateway <span class="op">{</span>
+  <span class="at">login</span> (user<span class="op">,</span> pass<span class="op">,</span> serverlocation<span class="op">,</span> callback) <span class="op">{</span>
+    <span class="kw">this</span>.<span class="at">serverlocation</span> <span class="op">=</span> serverlocation
+
+    <span class="va">axios</span>.<span class="at">post</span>(<span class="kw">this</span>.<span class="at">serverlocation</span> <span class="op">+</span> <span class="st">&#39;/login&#39;</span><span class="op">,</span> <span class="op">{</span>
+      <span class="st">&#39;user&#39;</span><span class="op">:</span> user<span class="op">,</span>
+      <span class="st">&#39;password&#39;</span><span class="op">:</span> pass
+    <span class="op">}</span>)
+      .<span class="at">then</span>(response <span class="op">=&gt;</span> <span class="op">{</span>
+        <span class="at">callback</span>(<span class="va">response</span>.<span class="va">data</span>.<span class="at">token</span>)
+      <span class="op">}</span>)
+      .<span class="at">catch</span>(e <span class="op">=&gt;</span> <span class="op">{</span>
+        <span class="va">console</span>.<span class="at">log</span>(e)
+      <span class="op">}</span>)
+  <span class="op">}</span></code></pre></div>
+<div class="sourceCode" include="src/api/apigateway.js" start="107" stop="109"><pre class="sourceCode javascript"><code class="sourceCode javascript">}
+
+<span class="va">injector</span>.<span class="at">service</span>(<span class="st">&#39;apiGateway&#39;</span><span class="op">,</span> ApiGateway)</code></pre></div>
+</section>
+<section class="slide level1">
+
+<h2 id="conclusion">Conclusion</h2>
+<p>Vue is a simple but effective JavaScript library to build Single Page Applications. It has less features than Angular but it can be extended easily with libraries you choose yourself.</p>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>
