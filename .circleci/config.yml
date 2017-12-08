@@ -15,9 +15,6 @@ jobs:
       - run:
           name: build
           command: npm run build
-      - run:
-          name: test
-          command: ./node_modules/petrol/bin/petrol run
       - store_artifacts:
           path: coverage
           prefix: coverage
